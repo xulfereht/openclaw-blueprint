@@ -1,5 +1,7 @@
 # OpenClaw Blueprint
 
+[한국어](README.ko.md)
+
 > A battle-tested reference architecture for running an autonomous AI agent system with [OpenClaw](https://github.com/openclaw/openclaw).
 
 This repo documents the patterns, configurations, and lessons learned from running a production OpenClaw setup — managing daily tasks, coding delegation, monitoring, and self-regulating resource usage across multiple AI providers.

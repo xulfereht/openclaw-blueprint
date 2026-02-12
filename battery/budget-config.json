@@ -1,0 +1,17 @@
+{
+  "anthropic": {
+    "label": "Anthropic (Max)",
+    "plan": "max-20x",
+    "source": "oauth-api",
+    "note": "Claude Code OAuth → api.anthropic.com/api/oauth/usage"
+  },
+  "battery": {
+    "tiers": {
+      "green":  { "max": 50, "label": "Normal",       "routing": "primary-free" },
+      "yellow": { "max": 70, "label": "Conservative",  "routing": "primary-complex-only" },
+      "orange": { "max": 85, "label": "Aggressive",    "routing": "primary-critical-only" },
+      "red":    { "max": 100, "label": "Emergency",    "routing": "fallback-primary" }
+    },
+    "fallbackOrder": ["gemini/gemini-2.5-flash", "zai/glm-4.7", "gemini/gemini-2.5-pro"]
+  }
+}

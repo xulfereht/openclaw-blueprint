@@ -1,0 +1,13 @@
+# Secrets
+*.key
+*.secret
+*.token
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/

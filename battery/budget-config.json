@@ -5,13 +5,65 @@
     "source": "oauth-api",
     "note": "Claude Code OAuth → api.anthropic.com/api/oauth/usage"
   },
+  "openai": {
+    "label": "OpenAI (ChatGPT Pro)",
+    "plan": "pro",
+    "source": "openclaw-models-status",
+    "note": "OpenClaw sub-agents use gpt-5.2 via OAuth. gpt-5.3-codex is CLI-only (separate OAuth)."
+  },
+  "zai": {
+    "label": "Z.ai (Max)",
+    "plan": "max",
+    "source": "manual",
+    "note": "GLM-5/4.7 via API key, usage tracking TBD"
+  },
   "battery": {
     "tiers": {
-      "green":  { "max": 50, "label": "Normal",       "routing": "primary-free" },
-      "yellow": { "max": 70, "label": "Conservative",  "routing": "primary-complex-only" },
-      "orange": { "max": 85, "label": "Aggressive",    "routing": "primary-critical-only" },
-      "red":    { "max": 100, "label": "Emergency",    "routing": "fallback-primary" }
+      "green": {
+        "max": 50,
+        "label": "Normal",
+        "routing": "opus-main, gpt52-sub"
+      },
+      "yellow": {
+        "max": 70,
+        "label": "Normal",
+        "routing": "opus-main, gpt52-sub"
+      },
+      "orange": {
+        "max": 85,
+        "label": "Opus-protected",
+        "routing": "opus-conversations-only, gpt52-sub"
+      },
+      "red": {
+        "max": 100,
+        "label": "Opus-minimum",
+        "routing": "opus-critical-only, gpt52-sub"
+      }
     },
-    "fallbackOrder": ["gemini/gemini-2.5-flash", "zai/glm-4.7", "gemini/gemini-2.5-pro"]
+    "routing": {
+      "main": "anthropic/claude-opus-4-6",
+      "subagent_default": "openai-codex/gpt-5.2",
+      "writing": "anthropic/claude-sonnet-4-5",
+      "coding_primary": "zai/glm-5",
+      "coding_parallel": [
+        "zai/glm-5",
+        "zai/glm-4.7"
+      ],
+      "coding_hard": "openai-codex/gpt-5.3-codex",
+      "coding_hard_mode": "codex-cli-only",
+      "fallbackOrder": [
+        "openai-codex/gpt-5.2",
+        "zai/glm-5",
+        "google/gemini-3-pro-preview"
+      ]
+    },
+    "aliases": {
+      "sonnet": "anthropic/claude-sonnet-4-5",
+      "glm5": "zai/glm-5",
+      "glm": "zai/glm-4.7",
+      "codex": "openai-codex/gpt-5.3-codex",
+      "spark": "openai-codex/gpt-5.3-codex-spark",
+      "gemini3": "google/gemini-3-pro-preview"
+    }
   }
 }

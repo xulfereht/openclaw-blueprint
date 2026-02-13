@@ -45,7 +45,7 @@ Claude Code runs in `--print` mode (non-interactive). Notifications handled by h
 | File modification successful + build passes | ✅ Mark complete |
 | Files modified but creation missed | 🔄 Manual patch (Phase 1 lesson) |
 | Wrong direction | ❌ Re-instruct |
-| Complex judgment needed | 🤔 Escalate to AMU |
+| Complex judgment needed | 🤔 Escalate to USER |
 
 ---
 
@@ -78,7 +78,7 @@ python3 scripts/tool-generator.py 2>/dev/null # Auto tool generation (LOW risk a
 bash scripts/check-unpublished.sh
 ```
 
-**If UNPUBLISHED > 0**: 🚨 Notify AMU immediately with commit list.
+**If UNPUBLISHED > 0**: 🚨 Notify user immediately with commit list.
 **If CLEAN**: Proceed silently.
 
 This catches forgotten releases. Non-negotiable check every heartbeat.
@@ -89,18 +89,18 @@ This catches forgotten releases. Non-negotiable check every heartbeat.
 bash scripts/release-state.sh check
 ```
 
-**If IN_PROGRESS**: 🚨 Release flow interrupted! Show state + next step. Resume or notify AMU.
+**If IN_PROGRESS**: 🚨 Release flow interrupted! Show state + next step. Resume or notify USER.
 
 Release flow is ONE PACKAGE — all steps must complete in sequence:
 ```
 [clinic-os] npm run publish          → set PUBLISHED_BETA
-[baekrokdam] npm run core:pull:beta  → set CORE_PULLED
-[baekrokdam] npm run build           → set BUILT
-[baekrokdam] wrangler pages deploy   → set DEPLOYED
+[client-instance] npm run core:pull:beta  → set CORE_PULLED
+[client-instance] npm run build           → set BUILT
+[client-instance] wrangler pages deploy   → set DEPLOYED
 [HQ DB] stable promotion            → set STABLE_PROMOTED → clear
 ```
 
-**If stuck >30min**: Escalate to AMU.
+**If stuck >30min**: Escalate to USER.
 **NEVER leave a release half-done.**
 
 ### 3.6. Zombie process cleanup
@@ -132,11 +132,11 @@ curl -s http://localhost:3001/api/monitoring/overview
 
 **If normal**: Do nothing (quiet)
 
-### 4. AMU reminders (daily)
+### 4. USER reminders (daily)
 ```bash
-# Cron job "amu-reminder" handles delivery (weekdays 9AM)
-# Check memory/tasks.md for AMU-assigned items (@amu)
-grep "@amu" memory/tasks.md 2>/dev/null
+# Cron job "user-reminder" handles delivery (weekdays 9AM)
+# Check memory/tasks.md for user-assigned items (@user)
+grep "@user" memory/tasks.md 2>/dev/null
 ```
 
 ### 5. Memory cleanup + embeddings (daily, once per 24h)

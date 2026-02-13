@@ -122,9 +122,9 @@ Tags: 3-5 keywords for searchability. Use lowercase, hyphenated (e.g., `ai-agent
 - File: `memory/for-user/ideas.md` — single file
 - "메모:", "아이디어:", "노트:" → append at top with `[YYYY-MM-DD HH:MM]`
 - Gravity: top = newest/active, bottom = oldest/inactive
-- Rescue: if AMU says "올려줘" → delete from bottom, move to top with `[date | orig: original_date | rescued: Nth time]`
-- Review: when a related topic comes up in conversation, mention old related notes (rescue decision is AMU's)
-- Merge: if similar notes found, suggest only — execute after AMU approval
+- Rescue: if user says "bring it up" → delete from bottom, move to top with `[date | orig: original_date | rescued: Nth time]`
+- Review: when a related topic comes up in conversation, mention old related notes (rescue decision is user's)
+- Merge: if similar notes found, suggest only — execute after user approval
 - No deletion — gravity serves as natural archiving
 
 ---
@@ -169,7 +169,7 @@ This file (AGENTS.md) documents behavior; it must not invent routing.
 
 | Role | Model (openclaw.json) | Alias | Notes |
 |------|------------------------|-------|-------|
-| **Main session** | `anthropic/claude-opus-4-6` | - | Orchestration + AMU conversation |
+| **Main session** | `anthropic/claude-opus-4-6` | - | Orchestration + user conversation |
 | **Sub-agent default** | `openai-codex/gpt-5.2` | - | Specs, research, judgment (default) |
 | **Writing / docs** | `anthropic/claude-sonnet-4-5` | `sonnet` | Use sparingly (shares Anthropic quota) |
 | **Coding (primary, parallel)** | `zai/glm-5` | `glm5` | Claude Code PTY; max ~3 concurrent |
@@ -193,7 +193,7 @@ Sonnet shares Anthropic quota with Opus. When protecting Opus, avoid Sonnet unle
 
 Canonical architecture:
 ```
-Opus (main) — orchestration, AMU conversation
+Opus (main) — orchestration, user conversation
 ├─ GPT-5.2 (OpenClaw sub-agent) — specs, research, judgment (default)
 ├─ Sonnet 4.5 (OpenClaw sub-agent) — writing, briefs, docs, translation
 ├─ Claude Code + GLM-5 x3 (PTY) — parallel coding implementation
@@ -226,7 +226,7 @@ Note: `openclaw.json` may include both `google/gemini-3-pro-preview` and `google
 **Rules**:
 - Read `dashboard/anthropic-usage.json` during heartbeat
 - Never fully stop — always route to a fallback
-- Notify AMU when Anthropic tier changes to Orange or Red
+- Notify user when Anthropic tier changes to Orange or Red
 
 ---
 
@@ -234,7 +234,7 @@ Note: `openclaw.json` may include both `google/gemini-3-pro-preview` and `google
 
 **Opus = Orchestrator, not worker.** Three responsibilities only:
 1. **Delegate** — write specs, spawn sub-agents, launch coders
-2. **Converse** — always responsive to AMU, never blocked
+2. **Converse** — always responsive to user, never blocked
 3. **Judge** — verify results, approve/reject, decide direction
 
 - Delegate heavy analysis/spec/research to the default sub-agent: `openai-codex/gpt-5.2`
@@ -242,7 +242,7 @@ Note: `openclaw.json` may include both `google/gemini-3-pro-preview` and `google
 - ⛔ **NEVER use GLM as OpenClaw sub-agent for coding** — always wrap in Claude Code PTY (provides diff editing, CLAUDE.md context, git, bash sandbox, multi-turn)
 - Use Sonnet (`anthropic/claude-sonnet-4-5`) for document generation only (shares Anthropic quota)
 - Use Codex CLI (`openai-codex/gpt-5.3-codex`) only for hard single-thread tasks (CLI-only; not OpenClaw sub-agent)
-- Stay responsive to AMU at all times — never block on long tasks
+- Stay responsive to user at all times — never block on long tasks
 - Direct work only: quick edits (≤5 lines), file reads, config changes, conversation
 - If it takes >30 seconds → spawn a sub-agent or coder session
 
@@ -343,7 +343,7 @@ Full details: `memory/dev-principles.md` (Decision Gate, Delegation Flow, Oracle
 
 > ⛔ STOP CHECK: "Am I writing >5 lines?" → YES → DELEGATE. No exceptions.
 > ⛔ clinic-os repo? → After commit → check-unpublished.sh → full release flow if needed.
-> ⛔ Completed work? → NOTIFY AMU (what changed, test result, next step).
+> ⛔ Completed work? → NOTIFY USER (what changed, test result, next step).
 
 1. **Trivial?** (≤5 lines, single file) → MUA direct edit.
 2. **Behavioral mod?** (refactor, migrate, existing API change) → Oracle Protocol.

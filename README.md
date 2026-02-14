@@ -82,6 +82,8 @@ The system uses multiple AI providers with intelligent fallback:
 
 Model selection is governed by the **Battery Management System** — see [battery/](battery/).
 
+For connecting each provider (Anthropic, OpenAI Codex, Z.ai, Google Gemini) with auth + config examples → see [providers/](providers/).
+
 ---
 
 ## Core Files
